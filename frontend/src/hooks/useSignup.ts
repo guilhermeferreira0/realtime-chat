@@ -1,9 +1,11 @@
 import toast from "react-hot-toast"
 import { InputsProps } from "../pages/Signup/types"
 import { useState } from "react"
+import { useAuth } from "../contexts/AuthContext.tsx/useAuth";
 
 export default function useSignup() {
   const [loading, setLoading] = useState(false);
+  const { setUserContext } = useAuth();
 
   const signup = async (inputs: InputsProps) => {
     const success = handleInputErrors(inputs);
@@ -11,13 +13,16 @@ export default function useSignup() {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3333/api/auth/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(inputs)
       });
 
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      setUserContext(data.data);
       console.log(data);
     } catch (error) {
       toast.error('Server Error');
