@@ -65,10 +65,13 @@ export async function login(req: Request, res: Response) {
     generateTokenAndSetCookie(userExisting.id, res);
 
     return res.status(200).json({
-      _id: userExisting.id,
-      fullname: userExisting.fullname,
-      username: userExisting.username,
-      profilePick: userExisting.profilePick,
+      success: true,
+      data: {
+        _id: userExisting.id,
+        fullname: userExisting.fullname,
+        username: userExisting.username,
+        profilePick: userExisting.profilePick,
+      },
     });
   } catch (error) {
     return res.status(500).json({ error: 'Interval Server Error' });
