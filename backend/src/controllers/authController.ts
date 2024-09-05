@@ -17,15 +17,14 @@ export async function signup(req: Request, res: Response) {
     const salt = await bcrypt.genSalt(10);
     const hashedPasswrod = await bcrypt.hash(password, salt);
 
-    const boyProfilePick = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const girlProfilePick = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const profilePick = `https://api.dicebear.com/9.x/lorelei/svg/seed=${username}`;
 
     const newUser = new User({
       fullname,
       username,
       password: hashedPasswrod,
       gender,
-      profilePick: gender === 'male' ? boyProfilePick : girlProfilePick,
+      profilePick: profilePick,
     });
 
     if (!newUser) {
