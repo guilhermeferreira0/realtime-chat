@@ -1,3 +1,4 @@
+import { useSocket } from "../../contexts/SocketContext/useSocket";
 import useConversation from "../../zustand/useConversation";
 
 interface ConversationProps {
@@ -10,13 +11,18 @@ interface ConversationProps {
 export default function Conversation(props: ConversationProps) {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === props._id;
+  const { onlineUsers } = useSocket();
+  let isOnline = false;
+  if (onlineUsers !== null && onlineUsers.length > 0) {
+    isOnline = onlineUsers.includes(props._id as never);
+  }
 
   return (
     <section 
       className={`flex gap-2 items-center hover:bg-slate-800 rounded p-2 py-1 cursor-pointer transition-all ${isSelected ? 'bg-slate-800' : ''}`}
       onClick={() => setSelectedConversation(props)}
     >
-      <div className="avatar online">
+      <div className={`avatar ${isOnline && 'online'}`}>
         <div className="w-12 rounded-full">
           <img 
             src={props.profilePick} 
