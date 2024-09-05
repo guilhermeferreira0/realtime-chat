@@ -1,4 +1,4 @@
-import { useAuth } from "../../contexts/AuthContext.tsx/useAuth";
+import { useAuth } from "../../contexts/AuthContext/useAuth";
 import extractTimes from "../../utils/extractTimes";
 import useConversation from "../../zustand/useConversation";
 

@@ -3,7 +3,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import { Toaster } from "react-hot-toast"
-import { useAuth } from "./contexts/AuthContext.tsx/useAuth"
+import { useAuth } from "./contexts/AuthContext/useAuth"
 
 function App() {
   const { authUser } = useAuth();
