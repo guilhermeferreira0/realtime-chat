@@ -1,35 +1,38 @@
-export default function Message() {
+import { useAuth } from "../../contexts/AuthContext.tsx/useAuth";
+import extractTimes from "../../utils/extractTimes";
+import useConversation from "../../zustand/useConversation";
+
+interface MessageProps {
+  senderId: string;
+  receiverId: string;
+  message: string;
+  createdAt: string;
+}
+
+export default function Message(props: MessageProps) {
+  const { authUser } = useAuth();
+  const { selectedConversation } = useConversation();
+  const fromMe = props.senderId === authUser?._id;
+  const chatClassName = fromMe ? 'chat-end' : 'chat-start';
+  const profilePic = fromMe ? authUser.profilePick : selectedConversation?.profilePick;
+  const bubbleBgColor = fromMe ? 'bg-blue-500' : '';
+  const formattedTime = extractTimes(props.createdAt);
+
   return (
     <section>
-      <div className="chat chat-start">
+      <div className={`chat ${chatClassName}`}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
-            alt="Tailwind CSS chat bubble component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            alt="Profile Picture"
+            src={profilePic}/>
         </div>
       </div>
-      <div className="chat-header">
-        Obi-Wan Kenobi
-        <time className="text-xs opacity-50">12:45</time>
+      <div className={`chat-bubble text-white ${bubbleBgColor}`}>{props.message}</div>
+      <div className="flex items-center justify-center gap-2">
+        <time className="text-xs opacity-50"> {formattedTime}</time>
+        <div className="chat-footer opacity-50">Delivered</div>
       </div>
-      <div className="chat-bubble">You were the Chosen One!</div>
-      <div className="chat-footer opacity-50">Delivered</div>
-    </div>
-    <div className="chat chat-end">
-      <div className="chat-image avatar">
-        <div className="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS chat bubble component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-        </div>
-      </div>
-      <div className="chat-header">
-        Anakin
-        <time className="text-xs opacity-50">12:46</time>
-      </div>
-      <div className="chat-bubble">I hate you!</div>
-      <div className="chat-footer opacity-50">Seen at 12:46</div>
     </div>
     </section>
   )
