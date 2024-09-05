@@ -1,4 +1,5 @@
-import { app } from './src/app';
+import app from './src/app';
+import { server } from './src/socket';
 import userRoutes from './src/routes/userRoutes';
 import 'dotenv/config';
 
@@ -11,7 +12,7 @@ const port = process.env.PORT || 3001;
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
-app.listen(port, () => {
+server.listen(port, () => {
   connectMongoDb();
   console.log(`Running! http://localhost:${port}`);
 });

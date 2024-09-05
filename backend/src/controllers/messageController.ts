@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Conversation from '../models/conversationModel';
 import Message from '../models/messageModel';
+import { getReceiverSockerId, io } from '../socket';
 
 export async function sendMessage(req: Request, res: Response) {
   try {
@@ -29,6 +30,15 @@ export async function sendMessage(req: Request, res: Response) {
     conversation.messages.push(newMessage._id);
     // this will run ir parallel
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    // SOCKET IO FUNCTIONALITY WILL GO HERE
+    const receiverSocketId = getReceiverSockerId(receiverId);
+    if (receiverSocketId) {
+      // io.to(<sockect_id>).emit()
+      const operator = io.to(receiverSocketId);
+      console.log('CHAMOU AQUI');
+      operator.emit('newMessage', newMessage);
+    }
     return res.status(201).json(newMessage);
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });

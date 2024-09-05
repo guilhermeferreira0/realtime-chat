@@ -1,16 +1,21 @@
-import express from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { app } from './socket';
 
 class App {
-  private readonly express = express();
+  private express: Application;
+
+  constructor(app: Application) {
+    this.express = app;
+  }
 
   configs() {
     this.express.use(express.json());
     this.express.use(cookieParser());
     this.express.use(
       cors({
-        origin: 'http://localhost:3000/',
+        origin: 'http://localhost:3000',
         credentials: true,
         methods: 'GET,PUT,POST,OPTIONS,DELETE',
       }),
@@ -23,4 +28,5 @@ class App {
   }
 }
 
-export const app = new App().start();
+const server = new App(app).start();
+export default server;
