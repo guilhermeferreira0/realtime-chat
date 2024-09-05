@@ -1,12 +1,25 @@
-export default function Conversation() {
+import useConversation from "../../zustand/useConversation";
+
+interface ConversationProps {
+  fullname: string;
+  profilePick: string;
+  emoji: string;
+  _id: string;
+}
+
+export default function Conversation(props: ConversationProps) {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+  const isSelected = selectedConversation?._id === props._id;
+
   return (
     <section 
-      className="flex gap-2 items-center hover:bg-slate-800 rounded p-2 py-1 cursor-pointer transition-all"
+      className={`flex gap-2 items-center hover:bg-slate-800 rounded p-2 py-1 cursor-pointer transition-all ${isSelected ? 'bg-slate-800' : ''}`}
+      onClick={() => setSelectedConversation(props)}
     >
       <div className="avatar online">
         <div className="w-12 rounded-full">
           <img 
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" 
+            src={props.profilePick} 
             alt="User Avatar"
           />
         </div>
@@ -15,9 +28,9 @@ export default function Conversation() {
       <div className="flex flex-col flex-1">
         <div className="flex gap-3 justify-between">
           <p className="font-bol text-gray-200">
-            John Doe
+            {props.fullname}
           </p>
-          <span className="text-xl">Icon</span>
+          <span className="text-xl">{props.emoji}</span>
         </div>
       </div>
     </section>
