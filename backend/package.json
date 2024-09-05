@@ -4,7 +4,8 @@
   "description": "Realtime Chat",
   "main": "server.ts",
   "scripts": {
-    "start:dev": "nodemon -watch \"src\" --exec \"ts-node server.ts\" -e ts"
+    "start:dev": "nodemon -watch \"src\" --exec \"ts-node server.ts\" -e ts",
+    "build": "tsc"
   },
   "author": "Guilherme Ferreira",
   "license": "ISC",

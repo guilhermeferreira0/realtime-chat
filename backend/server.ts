@@ -12,6 +12,7 @@ const port = process.env.PORT || 3001;
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
+
 server.listen(port, () => {
   connectMongoDb();
   console.log(`Running! http://localhost:${port}`);
