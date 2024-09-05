@@ -6,8 +6,7 @@ import Message from "./Message";
 export default function Messages() {
   const { loading, messages } = useGetMessages();
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  console.log(messages);
-
+  
   useEffect(() => {
     const scrollLastMessage = setTimeout(() => {
       lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
