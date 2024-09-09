@@ -35,9 +35,9 @@ export async function sendMessage(req: Request, res: Response) {
     const receiverSocketId = getReceiverSockerId(receiverId);
     if (receiverSocketId) {
       // io.to(<sockect_id>).emit()
-      const operator = io.to(receiverSocketId);
-      console.log('CHAMOU AQUI');
-      operator.emit('newMessage', newMessage);
+      io.to(receiverSocketId.socketId).emit('newMessage', newMessage);
+      // const operator = io.to(receiverSocketId);
+      // operator.emit('newMessage', newMessage);
     }
     return res.status(201).json(newMessage);
   } catch (error) {

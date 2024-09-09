@@ -2,6 +2,11 @@ import { Server } from 'socket.io';
 import http from 'http';
 import express from 'express';
 
+interface UserSocketProps {
+  userId: string;
+  socketId: string;
+}
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -12,19 +17,19 @@ const io = new Server(server, {
 });
 
 export const getReceiverSockerId = (receiverId: string) => {
-  return userSocketMap.find((vl) => vl == receiverId);
+  return userSocketMap.find((vl) => vl.userId == receiverId);
 };
 
-const userSocketMap = [] as string[]; // { userId: SocketId}
+const userSocketMap = [] as UserSocketProps[]; // { userId: SocketId}
 
 io.on('connection', (socket) => {
   const userId = socket.handshake.query.userId as string;
-  if (userId != 'undefined') userSocketMap.push(userId);
+  if (userId) userSocketMap.push({ userId, socketId: socket.id });
   // io.emit() is used to send events to all the connected clients
   io.emit('getOnlineUsers', userSocketMap);
 
   socket.on('disconnect', () => {
-    const index = userSocketMap.findIndex((vl) => vl === userId);
+    const index = userSocketMap.findIndex((vl) => vl.userId === userId);
     userSocketMap.splice(index, 1);
     io.emit('getOnlineUsers', userSocketMap);
   });
