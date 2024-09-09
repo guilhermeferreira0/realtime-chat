@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import useConversation from "../zustand/useConversation";
 import toast from "react-hot-toast";
+import { useSocket } from "../contexts/SocketContext/useSocket";
 
 export default function useGetMessages() {
   const [loading, setLoading] = useState(false);
   const { messages, setMessage, selectedConversation } = useConversation();
-
+  const { socket } = useSocket();
+  socket?.on('newMessage', (data) => {
+    setMessage([...messages, data])
+  })
+  
   useEffect(() => {
     const getMessages = async () => {
       setLoading(true);

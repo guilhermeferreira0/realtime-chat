@@ -12,9 +12,9 @@ export default function Conversation(props: ConversationProps) {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === props._id;
   const { onlineUsers } = useSocket();
-  let isOnline = false;
+  let isOnline;
   if (onlineUsers !== null && onlineUsers.length > 0) {
-    isOnline = onlineUsers.includes(props._id as never);
+    isOnline = onlineUsers.find(vl => vl.userId === props._id);
   }
 
   return (
